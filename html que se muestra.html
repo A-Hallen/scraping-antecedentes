@@ -1,0 +1,1273 @@
+<html dir="ltr" lang="es">
+  <head>
+    <script type="text/javascript">
+      try {
+        document.__defineGetter__("referrer", function () {
+          return "";
+        });
+      } catch (exception) {
+        try {
+          Object.defineProperties(document, {
+            referrer: {
+              get: function () {
+                return "";
+              },
+            },
+          });
+        } catch (exception) {}
+      }
+    </script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>MINISTERIO DEL INTERIOR</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <base
+      href="https://certificados.ministeriodelinterior.gob.ec/gestorcertificados/"
+    />
+    <link
+      type="image/x-icon"
+      rel="shortcut icon"
+      href="imagenes/icons/favicon.ico"
+    />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 7]>
+      <script
+        defer
+        type="text/javascript"
+        src="pngfix.js"
+        charset="utf-8"
+      ></script>
+    <![endif]-->
+
+    <link
+      href="css/jqgrid/redmond/jquery-ui-1.8.2.custom.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <script
+      src="js/jqgrid/jquery-1.5.min.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="js/jqgrid/jquery-ui-1.8.2.custom.min.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="js/jquery/jquery.blockUI.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="js/jquery/jquery.lksMenu.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="js/jquery/jquery.numeric.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+
+    <!-- INICIO CODIGO ACUERDO USO COOKIES -->
+    <link rel="stylesheet" type="text/css" href="css/cookieconsent.min.css" />
+    <script src="js/cookieconsent.min.js" data-cfasync="false"></script>
+
+    <script>
+      window.addEventListener("load", function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: {
+              background: "#252e39",
+            },
+            button: {
+              background: "#b6c9aa",
+              text: "#000000",
+            },
+          },
+          //"theme": "classic",
+          content: {
+            message:
+              "<br><br>En cumplimiento de lo dispuesto en el <a href='https://www.gobiernoelectronico.gob.ec/wp-content/uploads/2019/07/Acuerdo-012-2019.pdf' class='cc-link' target='_blank'>Acuerdo No. 012-2019</a>, emitido por el Ministerio de Telecomunicaciones y de la Sociedad de la Información, comunicamos nuestra política para el tratamiento de datos personales. Para continuar navegando en este sitio debe aceptar los términos de la misma.<br><br>",
+            href: "https://www.ministeriodelinterior.gob.ec/wp-content/uploads/downloads/2023/04/2023.04.12_politica_de_tratamiento_de_datos.pdf",
+          },
+        });
+      });
+    </script>
+    <!-- FIN CODIGO ACUERDO USO COOKIES -->
+
+    <script>
+      if (top != self) top.location.href = location.href;
+
+      $(function () {
+        document.addEventListener(
+          "contextmenu",
+          function (e) {
+            e.preventDefault();
+          },
+          false
+        );
+        document.addEventListener(
+          "keydown",
+          function (e) {
+            //document.onkeydown = function(e) {
+            // "I" key
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+              disabledEvent(e);
+            }
+            // "J" key
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+              disabledEvent(e);
+            }
+            // "S" key + macOS
+            if (
+              e.keyCode == 83 &&
+              (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+            ) {
+              disabledEvent(e);
+            }
+            // "U" key
+            if (e.ctrlKey && e.keyCode == 85) {
+              disabledEvent(e);
+            }
+            // "F12" key
+            if (event.keyCode == 123) {
+              disabledEvent(e);
+            }
+          },
+          false
+        );
+        function disabledEvent(e) {
+          if (e.stopPropagation) {
+            e.stopPropagation();
+          } else if (window.event) {
+            window.event.cancelBubble = true;
+          }
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      $(document).ready(function () {
+        if (jQuery.browser.msie && jQuery.browser.version >= 9) {
+          jQuery.support.noCloneEvent = true;
+        }
+
+        $(".menu").lksMenu();
+        $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
+        $("input#txtCi").numeric({ negative: false, decimal: false });
+        $("#txtCi").attr("maxlength", "10");
+
+        $("#cmbEcuatoriano").change(function (event) {
+          var ise = $("#cmbEcuatoriano").val();
+          $("input:radio[name=rbtType]").attr("disabled", "disabled");
+          $("#cmbDocumentoPais").attr("disabled");
+          if (ise == "NO") {
+            $("input:radio[name=rbtType]").removeAttr("disabled");
+            $("#cmbDocumentoPais").removeAttr("disabled");
+            $("#cmbDocumentoPais option[value=ECU]").remove();
+            $("#divDocumentoPais").toggle("slow");
+            $("#txtCi").replaceWith(
+              '<input type="text" id="txtCi" class="txt" name="txtCi" style="width:150px;"/>'
+            );
+          } else {
+            $("#rbtType1").attr("checked", true);
+            $("#txtCi").replaceWith(
+              '<input type="text" id="txtCi" class="txt" name="txtCi" style="width:150px;"/>'
+            );
+            $("input#txtCi").numeric({ negative: false, decimal: false });
+            $("#txtCi").attr("maxlength", "10");
+            //$('#divDocumentoPais').hide();
+            $("#cmbDocumentoPais").append(
+              $("<option>", { value: "ECU", text: "ECUADOR" })
+            );
+            $("#cmbDocumentoPais option[value=ECU]").attr("selected", true);
+            $("#cmbDocumentoPais").hide();
+          }
+        });
+
+        $("#btnSig1")
+          .button()
+          .click(function () {
+            var ci = $("#txtCi").val();
+            if (ci == "") {
+              openSimpleDialog(
+                "Debe ingresar el número de documento para consultar (cédula o pasaporte)."
+              );
+              return false;
+            }
+            var tp = $("input:radio[name=rbtType]:checked").val();
+            var ise = $("#cmbEcuatoriano").val();
+            var dp = $("#cmbDocumentoPais").val();
+            if (ise == "SI" && tp == "C") {
+              if ($.trim(ci).length < 10) {
+                openSimpleDialog(
+                  "La cédula de identidad debe tener 10 dígitos."
+                );
+                return false;
+              }
+            }
+
+            var code = btoa(
+              "WSgetData%" + ci + "%" + tp + "%" + ise + "%" + dp
+            );
+
+            $.post(
+              "antecedentes/function.php",
+              { code: code },
+              function (data) {
+                var js = eval(data);
+                if ($.trim(js[0].error).length > 0) {
+                  openSimpleDialog(js[0].error);
+                } else {
+                  var idr = js[0].TFARYA;
+                  var codeidr = btoa("process%" + idr);
+                  //
+                  $.post("antecedentes/index.php", { code: codeidr }).done(
+                    function (data) {
+                      $("body").html(data);
+                    }
+                  );
+                  //window.location="antecedentes/indexTest.php?prc=process&uid="+idr;
+                }
+              }
+            );
+          });
+
+        $("#btnSig2")
+          .button()
+          .click(function () {
+            if ($.trim($("#txtMotivo").val()).length < 10) {
+              openSimpleDialog(
+                "El Motivo de la Consulta debe tener al menos 10 caracteres."
+              );
+              return false;
+            }
+            var idr = $("#hdIdr").val();
+            var motivo = $("#txtMotivo").val();
+            var codeMotivo = btoa("setMotive%" + idr + "%" + motivo);
+            $.post(
+              "antecedentes/function.php",
+              { code: codeMotivo },
+              function (data) {
+                var js = eval(data);
+                if ($.trim(js[0].error).length > 0) {
+                  openSimpleDialog(js[0].error);
+                } else {
+                  evento_sig_tab2();
+                }
+              }
+            );
+          });
+        //encuesta
+        /*$("#btnSig3").button().click(function() {		
+                evento_sig_tab3();		
+            });*/
+
+        $("#btnAtr1")
+          .button()
+          .click(function () {
+            evento_atr_tab1();
+          });
+
+        $("#btnAtr2")
+          .button()
+          .click(function () {
+            evento_atr_tab2();
+          });
+        //encuesta
+        /*$("#btnAtr3").button().click(function() {		
+                evento_atr_tab3();		
+            });*/
+
+        $("#btnOpen")
+          .button()
+          .click(function () {
+            loadCertificado();
+          });
+
+        $("#dvDialogText").dialog({
+          dialogClass: "alert",
+          closeOnEscape: false,
+          autoOpen: false,
+          height: 500,
+          width: 400,
+          modal: true,
+          buttons: {
+            Cancelar: function () {
+              window.location.replace(
+                "https://www.ministeriodelinterior.gob.ec"
+              );
+            },
+            Aceptar: function () {
+              $(this).dialog("close");
+              $("#tab1").show(1000);
+              $("#tab4").show(1000);
+              // $("#tab5").show(1000); //encuetsa
+            },
+          },
+        });
+
+        $("#dvSimpleDialog").dialog({
+          autoOpen: false,
+          height: 150,
+          width: 400,
+          modal: true,
+          show: {
+            effect: "blind",
+            duration: 1000,
+          },
+          hide: {
+            effect: "explode",
+            duration: 1000,
+          },
+          buttons: {
+            Ok: function () {
+              $(this).dialog("close");
+            },
+          },
+        });
+
+        $("#spVideo").click(function () {
+          window.open("http://youtu.be/GUYqAYSHHE4");
+        });
+      });
+
+      function evento_atr_tab1() {
+        $("#tab1").show(1000);
+        $("#tab2").hide(1000);
+      }
+
+      function evento_atr_tab2() {
+        $("#tab2").show(1000);
+        $("#tab3").hide(1000);
+      }
+      //encuesta
+      /*function evento_atr_tab3(){		
+            $("#tab3").show(1000);
+            $("#tab4").hide(1000);
+        }*/
+
+      function evento_sig_tab1() {
+        $("#tab1").hide();
+        $("#tab2").show(1000);
+        $("#tab3").hide();
+        //$("#tab4").hide(); //encuesta
+      }
+      function evento_sig_tab2() {
+        $("#tab2").hide(1000);
+        $("#tab3").show(1000);
+      }
+      //encuesta
+      /*function evento_sig_tab3(){
+            $("#tab3").hide(1000);
+            $("#tab4").show(1000);
+        }*/
+
+      function setTabs() {
+        $("#tab1").hide();
+        $("#tab2").hide();
+        $("#tab3").hide();
+        $("#tab4").hide();
+        //$("#tab5").hide();	//encuesta
+      }
+
+      function setTabsCo() {
+        $("#tab1").hide();
+        $("#tab2").show(1000);
+        $("#tab3").hide();
+        $("#tab4").show(1000);
+        //$("#tab4").hide(); // encuesta
+        //$("#tab5").show(1000); // encuesta
+
+        $("#dvDialogText").hide();
+      }
+
+      function inicializar() {
+        if (0 == 0) {
+          setTabs();
+          $("#dvDialogText").dialog("open");
+        } else {
+          setTabsCo();
+        }
+      }
+
+      function loadCertificado() {
+        var codecrt = btoa($("#hdIdr").val());
+        window.open("antecedentes/certificado.php?code=" + codecrt);
+      }
+
+      function openSimpleDialog(data) {
+        if (!$("#dvSimpleDialog").hasClass("ui-dialog")) {
+          $("#dvSimpleDialog").dialog({
+            autoOpen: false,
+            height: 160,
+            width: 415,
+            modal: true,
+            show: {
+              effect: "blind",
+              duration: 500,
+            },
+            hide: {
+              effect: "explode",
+              duration: 500,
+            },
+            buttons: {
+              Ok: function () {
+                $(this).dialog("close");
+              },
+            },
+          });
+        }
+        $("#dvSimpleDialog").html(data);
+        $("#dvSimpleDialog").dialog("open");
+        return false;
+      }
+
+      function clicb() {
+        $("#somediv").load("antecedentes/tmp.php");
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: #ffffff;
+        color: #000;
+        font-size: 11px;
+      }
+
+      .dvTabs {
+        text-align: center;
+        border: 1px solid #417394;
+        border-radius: 5px 5px 5px 5px;
+        margin: 10px;
+        padding: 10px;
+      }
+
+      .dvTabsTable td {
+        font-size: 14px;
+      }
+
+      .txt {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .menu {
+        font-family: Helvetica;
+      }
+      .menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+      .menu ul li ul {
+        width: 100%;
+      }
+      .menu ul li {
+        margin: 0;
+        padding: 2px;
+        background-color: transparent;
+        border: 1px solid #333;
+        text-align: left;
+      }
+
+      .menu ul li ul li {
+        margin: 0;
+        padding: 5px;
+        background-color: #eaf4fd;
+        border-color: transparent;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .menu ul li a {
+        padding-top: 5px;
+        border-color: #404040 #1a1a1a #1a1a1a #505050;
+        border-style: solid;
+        border-width: 1px;
+        padding-left: 10px;
+        display: block;
+        text-decoration: none;
+        color: #000066;
+        font: bold 12px Arial, Helvetica, sans-serif;
+        height: 20px;
+        background: #fff no-repeat center right;
+        line-height: 1.3em;
+      }
+      .menu ul li ul a {
+        display: inline;
+        text-decoration: none;
+        border: none;
+        background-color: transparent;
+        padding: 0px;
+      }
+      .menu ul li a:hover {
+        background: #ecf0f4 no-repeat center right;
+        font-weight: bold;
+      }
+      .menu ul li ul a:hover {
+        background: #fcab14;
+        color: black;
+      }
+
+      .menu ul li ul {
+        display: none;
+      }
+
+      .ui-dialog-titlebar-close {
+        display: none;
+      }
+
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        opacity: 0;
+        pointer-events: none;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    </style>
+    <style></style>
+  </head>
+  <body onload="inicializar()">
+    <div
+      role="dialog"
+      aria-live="polite"
+      aria-label="cookieconsent"
+      aria-describedby="cookieconsent:desc"
+      class="cc-window cc-banner cc-type-info cc-theme-block cc-bottom cc-color-override--456145346 cc-invisible"
+      style="display: none"
+    >
+      <!--googleoff: all--><span id="cookieconsent:desc" class="cc-message"
+        ><br /><br />En cumplimiento de lo dispuesto en el
+        <a
+          href="https://www.gobiernoelectronico.gob.ec/wp-content/uploads/2019/07/Acuerdo-012-2019.pdf"
+          class="cc-link"
+          target="_blank"
+          >Acuerdo No. 012-2019</a
+        >, emitido por el Ministerio de Telecomunicaciones y de la Sociedad de
+        la Información, comunicamos nuestra política para el tratamiento de
+        datos personales. Para continuar navegando en este sitio debe aceptar
+        los términos de la misma.<br /><br />
+        <a
+          aria-label="learn more about cookies"
+          role="button"
+          tabindex="0"
+          class="cc-link"
+          href="https://www.ministeriodelinterior.gob.ec/wp-content/uploads/downloads/2023/04/2023.04.12_politica_de_tratamiento_de_datos.pdf"
+          rel="noopener noreferrer nofollow"
+          target="_blank"
+          >Polí&shy;tica para el tratamiento de datos personales</a
+        ></span
+      >
+      <div class="cc-compliance">
+        <a
+          aria-label="dismiss cookie message"
+          role="button"
+          tabindex="0"
+          class="cc-btn cc-dismiss"
+          >Aceptar!</a
+        >
+      </div>
+      <!--googleon: all-->
+    </div>
+    <table width="100%" border="1">
+      <tbody>
+        <tr>
+          <td>
+            <input type="hidden" id="hdCi" />
+            <input type="hidden" id="hdName" />
+            <input type="hidden" id="hdType" />
+            <input type="hidden" id="hdAntecedent" />
+            <input type="hidden" id="hdIdr" />
+            <input type="hidden" id="hdMotivo" />
+
+            <div class="margin_bottom_10"></div>
+
+            <div style="font-size: 14px; font-weight: bold; color: #009">
+              CERTIFICADO DE ANTECEDENTES PENALES
+            </div>
+
+            <div class="margin_bottom_10"></div>
+
+            <div id="somediv"></div>
+
+            <div id="tab1" class="dvTabs" style="">
+              <table width="100%" class="dvTabsTable">
+                <tbody>
+                  <tr>
+                    <td>
+                      Ingrese los datos de la persona de quien se desea
+                      consultar el Certificado:
+                      <br />
+                      <br />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      El Certificado es para un ciudadano Ecuatoriano?
+                      <select
+                        id="cmbEcuatoriano"
+                        name="cmbEcuatoriano"
+                        style="font-size: 16px; font-weight: bold"
+                      >
+                        <option value="SI" selected="selected">SI</option>
+                        <option value="NO">NO</option>
+                      </select>
+                      <br />
+                      <br />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Seleccione el <b>Tipo de Documento</b></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input
+                        type="radio"
+                        name="rbtType"
+                        id="rbtType1"
+                        value="C"
+                        checked="checked"
+                        disabled="disabled"
+                      />Cédula de Identidad
+                      <input
+                        type="radio"
+                        name="rbtType"
+                        id="rbtType2"
+                        value="P"
+                        disabled="disabled"
+                      />Pasaporte
+                      <br />
+                      <br />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div id="divDocumentoPais" style="display: none">
+                        Seleccione el <b>Pais del Documento</b>
+                        <br />
+                        <br />
+                        <select
+                          id="cmbDocumentoPais"
+                          name="cmbDocumentoPais"
+                          style="
+                            font-size: 16px;
+                            font-weight: bold;
+                            width: 250px;
+                          "
+                          disabled="disabled"
+                        >
+                          <option value="ECU" selected="selected">
+                            ECUADOR
+                          </option>
+                          <option value="AFG">AFGANISTAN</option>
+                          <option value="ALB">ALBANIA</option>
+                          <option value="DEU">ALEMANIA</option>
+                          <option value="AND">ANDORRA</option>
+                          <option value="AGO">ANGOLA</option>
+                          <option value="AIA">ANGUILA</option>
+                          <option value="ATA">ANTARTIDA</option>
+                          <option value="MKD">
+                            ANTIGUA REPUBLICA YUGOSLAVA DE MACEDONIA
+                          </option>
+                          <option value="ATG">ANTIGUA Y BARBUDA</option>
+                          <option value="SAU">ARABIA SAUDITA</option>
+                          <option value="DZA">ARGELIA</option>
+                          <option value="ARG">ARGENTINA</option>
+                          <option value="ARM">ARMENIA</option>
+                          <option value="ABW">ARUBA</option>
+                          <option value="AUS">AUSTRALIA</option>
+                          <option value="AUT">AUSTRIA</option>
+                          <option value="AZE">AZERBAIYAN</option>
+                          <option value="BHS">BAHAMAS</option>
+                          <option value="BGD">BANGLADESH</option>
+                          <option value="BRB">BARBADOS</option>
+                          <option value="BHR">BAREIN</option>
+                          <option value="BEL">BELGICA</option>
+                          <option value="BLZ">BELICE</option>
+                          <option value="BEN">BENIN</option>
+                          <option value="BMU">BERMUDAS</option>
+                          <option value="BLR">BIELORRUSIA</option>
+                          <option value="BOL">BOLIVIA</option>
+                          <option value="BES">
+                            BONAIRE, SAN EUSTAQUIO Y SABA
+                          </option>
+                          <option value="BIH">BOSNIA Y HERZEGOVINA</option>
+                          <option value="BWA">BOTSUANA</option>
+                          <option value="BRA">BRASIL</option>
+                          <option value="BRN">BRUNEI DARUSSALAM</option>
+                          <option value="BGR">BULGARIA</option>
+                          <option value="BFA">BURKINA FASO</option>
+                          <option value="BDI">BURUNDI</option>
+                          <option value="BTN">BUTAN</option>
+                          <option value="CPV">CABO VERDE</option>
+                          <option value="KHM">CAMBOYA</option>
+                          <option value="CMR">CAMERUN</option>
+                          <option value="CAN">CANADA</option>
+                          <option value="QAT">CATAR</option>
+                          <option value="TCD">CHAD</option>
+                          <option value="CHL">CHILE</option>
+                          <option value="CHN">CHINA</option>
+                          <option value="CYP">CHIPRE</option>
+                          <option value="COL">COLOMBIA</option>
+                          <option value="COM">COMORAS</option>
+                          <option value="COG">CONGO</option>
+                          <option value="PRK">COREA DEL NORTE</option>
+                          <option value="KOR">COREA DEL SUR</option>
+                          <option value="CIV">COSTA DE MARFIL</option>
+                          <option value="CRI">COSTA RICA</option>
+                          <option value="HRV">CROACIA</option>
+                          <option value="CUB">CUBA</option>
+                          <option value="CUW">CURAZAO</option>
+                          <option value="DNK">DINAMARCA</option>
+                          <option value="DMA">DOMINICA</option>
+                          <option value="EGY">EGIPTO</option>
+                          <option value="SLV">EL SALVADOR</option>
+                          <option value="ARE">EMIRATOS ARABES UNIDOS</option>
+                          <option value="ERI">ERITREA</option>
+                          <option value="SVK">ESLOVAQUIA</option>
+                          <option value="SVN">ESLOVENIA</option>
+                          <option value="ESP">ESPAÑA</option>
+                          <option value="USA">ESTADOS UNIDOS AMERICA</option>
+                          <option value="EST">ESTONIA</option>
+                          <option value="ETH">ETIOPIA</option>
+                          <option value="PHL">FILIPINAS</option>
+                          <option value="FIN">FINLANDIA</option>
+                          <option value="FJI">FIYI</option>
+                          <option value="FRA">FRANCIA</option>
+                          <option value="GAB">GABON</option>
+                          <option value="GMB">GAMBIA</option>
+                          <option value="GEO">GEORGIA</option>
+                          <option value="SGS">
+                            GEORGIA DEL SUR Y LAS ISLAS SANDWICH DEL SUR
+                          </option>
+                          <option value="GHA">GHANA</option>
+                          <option value="GIB">GIBRALTAR</option>
+                          <option value="GRD">GRANADA</option>
+                          <option value="GRC">GRECIA</option>
+                          <option value="GRL">GROENLANDIA</option>
+                          <option value="GLP">GUADALUPE</option>
+                          <option value="GUM">GUAM</option>
+                          <option value="GTM">GUATEMALA</option>
+                          <option value="GUF">GUAYANA FRANCESA</option>
+                          <option value="GGY">GUERNSEY</option>
+                          <option value="GIN">GUINEA</option>
+                          <option value="GNB">GUINEA-BISAU</option>
+                          <option value="GNQ">GUINEA ECUATORIAL</option>
+                          <option value="GUY">GUYANA</option>
+                          <option value="HTI">HAITI</option>
+                          <option value="NLD">HOLANDA</option>
+                          <option value="HND">HONDURAS</option>
+                          <option value="HKG">HONG KONG</option>
+                          <option value="HUN">HUNGRIA</option>
+                          <option value="IND">INDIA</option>
+                          <option value="IDN">INDONESIA</option>
+                          <option value="NTZ">
+                            INSTALACIONES EN AGUAS INTERNACIONALES
+                          </option>
+                          <option value="IRQ">IRAK</option>
+                          <option value="IRN">IRAN</option>
+                          <option value="IRL">IRLANDA</option>
+                          <option value="BVT">ISLA BOUVET</option>
+                          <option value="IMN">ISLA DE MAN</option>
+                          <option value="CXR">ISLA DE NAVIDAD</option>
+                          <option value="HMD">
+                            ISLA HEARD E ISLAS MCDONALD
+                          </option>
+                          <option value="ISL">ISLANDIA</option>
+                          <option value="NFK">ISLA NORFOLK</option>
+                          <option value="ALA">ISLAS ALAND</option>
+                          <option value="CYM">ISLAS CAIMAN</option>
+                          <option value="CCK">ISLAS COCOS (KEELING)</option>
+                          <option value="COK">ISLAS COOK</option>
+                          <option value="UMI">
+                            ISLAS DE ULTRAMAR MENORES DE ESTADOS UNIDOS
+                          </option>
+                          <option value="FRO">ISLAS FEROE</option>
+                          <option value="FLK">ISLAS MALVINAS [FALKLAND]</option>
+                          <option value="MNP">ISLAS MARIANAS DEL NORTE</option>
+                          <option value="MHL">ISLAS MARSHALL</option>
+                          <option value="SLB">ISLAS SALOMON</option>
+                          <option value="TCA">ISLAS TURCAS Y CAICOS</option>
+                          <option value="VGB">
+                            ISLAS VIRGENES (BRITANICAS)
+                          </option>
+                          <option value="VIR">ISLAS VIRGENES (EE.UU.)</option>
+                          <option value="ISR">ISRAEL</option>
+                          <option value="ITA">ITALIA</option>
+                          <option value="JAM">JAMAICA</option>
+                          <option value="JPN">JAPON</option>
+                          <option value="JEY">JERSEY</option>
+                          <option value="JOR">JORDANIA</option>
+                          <option value="KAZ">KAZAJISTAN</option>
+                          <option value="KEN">KENIA</option>
+                          <option value="KGZ">KIRGUISTAN</option>
+                          <option value="KIR">KIRIBATI</option>
+                          <option value="RKS">KOSOVO</option>
+                          <option value="KWT">KUWAIT</option>
+                          <option value="LSO">LESOTO</option>
+                          <option value="LVA">LETONIA</option>
+                          <option value="LBN">LIBANO</option>
+                          <option value="LBR">LIBERIA</option>
+                          <option value="LBY">LIBIA</option>
+                          <option value="LIE">LIECHTENSTEIN</option>
+                          <option value="LTU">LITUANIA</option>
+                          <option value="LUX">LUXEMBURGO</option>
+                          <option value="MAC">MACAO</option>
+                          <option value="MDG">MADAGASCAR</option>
+                          <option value="MYS">MALASIA</option>
+                          <option value="MWI">MALAUI</option>
+                          <option value="MDV">MALDIVAS</option>
+                          <option value="MLI">MALI</option>
+                          <option value="MLT">MALTA</option>
+                          <option value="MAR">MARRUECOS</option>
+                          <option value="MTQ">MARTINICA</option>
+                          <option value="MUS">MAURICIO</option>
+                          <option value="MRT">MAURITANIA</option>
+                          <option value="MYT">MAYOTTE</option>
+                          <option value="MEX">MEXICO</option>
+                          <option value="FSM">MICRONESIA</option>
+                          <option value="MCO">MONACO</option>
+                          <option value="MNG">MONGOLIA</option>
+                          <option value="MNE">MONTENEGRO</option>
+                          <option value="MSR">MONTSERRAT</option>
+                          <option value="MOZ">MOZAMBIQUE</option>
+                          <option value="MMR">MYANMAR</option>
+                          <option value="NAM">NAMIBIA</option>
+                          <option value="NRU">NAURU</option>
+                          <option value="NPL">NEPAL</option>
+                          <option value="NIC">NICARAGUA</option>
+                          <option value="NER">NIGER</option>
+                          <option value="NGA">NIGERIA</option>
+                          <option value="NIU">NIUE</option>
+                          <option value="NOR">NORUEGA</option>
+                          <option value="NCL">NUEVA CALEDONIA</option>
+                          <option value="NZL">NUEVA ZELANDA</option>
+                          <option value="OMN">OMAN</option>
+                          <option value="PAK">PAKISTAN</option>
+                          <option value="PLW">PALAOS</option>
+                          <option value="PSE">PALESTINA</option>
+                          <option value="PAN">PANAMA</option>
+                          <option value="PNG">PAPUA NUEVA GUINEA</option>
+                          <option value="PRY">PARAGUAY</option>
+                          <option value="PER">PERU</option>
+                          <option value="PCN">PITCAIRN</option>
+                          <option value="PYF">POLINESIA FRANCESA</option>
+                          <option value="POL">POLONIA</option>
+                          <option value="PRT">PORTUGAL</option>
+                          <option value="PRI">PUERTO RICO</option>
+                          <option value="GBR">REINO UNIDO</option>
+                          <option value="CAF">REPUBLICA CENTROAFRICANA</option>
+                          <option value="CZE">REPUBLICA CHECA</option>
+                          <option value="COD">
+                            REPUBLICA DEMOCRATICA DEL CONGO
+                          </option>
+                          <option value="LAO">
+                            REPUBLICA DEMOCRATICA POPULAR LAO
+                          </option>
+                          <option value="MDA">REPUBLICA DE MOLDAVIA</option>
+                          <option value="DOM">REPUBLICA DOMINICANA</option>
+                          <option value="TZA">
+                            REPUBLICA UNIDA DE TANZANIA
+                          </option>
+                          <option value="REU">REUNION</option>
+                          <option value="RWA">RUANDA</option>
+                          <option value="ROU">RUMANIA</option>
+                          <option value="RUS">RUSIA</option>
+                          <option value="ESH">SAHARA OCCIDENTAL</option>
+                          <option value="WSM">SAMOA</option>
+                          <option value="ASM">SAMOA AMERICANA</option>
+                          <option value="BLM">SAN BARTOLOME</option>
+                          <option value="KNA">SAN CRISTOBAL Y NIEVES</option>
+                          <option value="SMR">SAN MARINO</option>
+                          <option value="MAF">
+                            SAN MARTIN (PARTE FRANCESA)
+                          </option>
+                          <option value="SPM">SAN PEDRO Y MIQUELON</option>
+                          <option value="SHN">
+                            SANTA HELENA, ASCENSION Y TRISTAN DE ACUÃ‘A
+                          </option>
+                          <option value="LCA">SANTA LUCIA</option>
+                          <option value="VAT">
+                            SANTA SEDE ESTADO DE LA CIUDAD DEL VATICANO
+                          </option>
+                          <option value="STP">SANTO TOME Y PRINCIPE</option>
+                          <option value="VCT">
+                            SAN VICENTE Y LAS GRANADINAS
+                          </option>
+                          <option value="SEN">SENEGAL</option>
+                          <option value="SRB">SERBIA</option>
+                          <option value="SYC">SEYCHELLES</option>
+                          <option value="SLE">SIERRA LEONA</option>
+                          <option value="SGP">SINGAPUR</option>
+                          <option value="SXM">
+                            SINT MAARTEN (PARTE HOLANDESA)
+                          </option>
+                          <option value="SYR">SIRIA</option>
+                          <option value="SOM">SOMALIA</option>
+                          <option value="LKA">SRI LANKA</option>
+                          <option value="SWZ">SUAZILANDIA</option>
+                          <option value="ZAF">SUDAFRICA</option>
+                          <option value="SDN">SUDAN</option>
+                          <option value="SSD">SUDAN DEL SUR</option>
+                          <option value="SWE">SUECIA</option>
+                          <option value="CHE">SUIZA</option>
+                          <option value="SUR">SURINAM</option>
+                          <option value="SJM">SVALBARD Y JAN MAYEN</option>
+                          <option value="THA">TAILANDIA</option>
+                          <option value="TWN">TAIWAN</option>
+                          <option value="TJK">TAYIKISTAN</option>
+                          <option value="IOT">
+                            TERRITORIO BRITANICO DEL OCEANO INDICO
+                          </option>
+                          <option value="ATF">
+                            TERRITORIOS AUSTRALES FRANCESES
+                          </option>
+                          <option value="TLS">TIMOR-LESTE</option>
+                          <option value="TGO">TOGO</option>
+                          <option value="TKL">TOKELAU</option>
+                          <option value="TON">TONGA</option>
+                          <option value="TTO">TRINIDAD Y TOBAGO</option>
+                          <option value="TUN">TUNEZ</option>
+                          <option value="TKM">TURKMENISTAN</option>
+                          <option value="TUR">TURQUIA</option>
+                          <option value="TUV">TUVALU</option>
+                          <option value="UKR">UCRANIA</option>
+                          <option value="UGA">UGANDA</option>
+                          <option value="URY">URUGUAY</option>
+                          <option value="UZB">UZBEKISTAN</option>
+                          <option value="VUT">VANUATU</option>
+                          <option value="VEN">VENEZUELA</option>
+                          <option value="VNM">VIETNAM</option>
+                          <option value="WLF">WALLIS Y FUTUNA</option>
+                          <option value="YEM">YEMEN</option>
+                          <option value="DJI">YIBUTI</option>
+                          <option value="ZMB">ZAMBIA</option>
+                          <option value="ZWE">ZIMBABUE</option>
+                        </select>
+                      </div>
+                      <br />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Ingrese el <b>Número de Documento</b></td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <input
+                        type="text"
+                        id="txtCi"
+                        name="txtCi"
+                        class="txt"
+                        value=""
+                        style="width: 150px"
+                        maxlength="10"
+                      />
+
+                      <button
+                        id="btnSig1"
+                        style="height: 25px; width: 90px"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        role="button"
+                        aria-disabled="false"
+                      >
+                        <span class="ui-button-text">Siguiente</span>
+                      </button>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="tab2" class="dvTabs" style="display: none">
+              <table width="100%" class="dvTabsTable">
+                <tbody>
+                  <tr>
+                    <td>
+                      El número de documento:
+                      <div
+                        id="dvCi"
+                        style="
+                          color: #000099;
+                          font-weight: bold;
+                          font-size: 18px;
+                          padding-top: 3px;
+                        "
+                      ></div>
+                      <div class="margin_bottom_10"></div>
+                      Pertenece a:
+                      <div
+                        id="dvName"
+                        style="
+                          color: #000099;
+                          font-weight: bold;
+                          font-size: 18px;
+                          padding-top: 3px;
+                        "
+                      ></div>
+                      <div class="margin_bottom_10"></div>
+                      Para continuar por favor<br />ingrese el
+                      <b>Motivo de Consulta</b>:
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <textarea
+                        name="txtMotivo"
+                        id="txtMotivo"
+                        rows="3"
+                        cols="25"
+                        class="txt"
+                      ></textarea>
+                      <div class="margin_bottom_10"></div>
+                      <button
+                        id="btnAtr1"
+                        style="height: 25px; width: 90px"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        role="button"
+                        aria-disabled="false"
+                      >
+                        <span class="ui-button-text"
+                          >&nbsp;&nbsp;&nbsp;&nbsp;Atras&nbsp;&nbsp;&nbsp;&nbsp;</span
+                        ></button
+                      >&nbsp;&nbsp;<button
+                        id="btnSig2"
+                        style="height: 25px; width: 90px"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        role="button"
+                        aria-disabled="false"
+                      >
+                        <span class="ui-button-text">Siguiente</span>
+                      </button>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="tab3" class="dvTabs" style="display: none">
+              <table width="100%" class="dvTabsTable">
+                <tbody>
+                  <tr>
+                    <td colspan="2">
+                      El resultado de su consulta es el siguiente:
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%" align="right">Nombre :</td>
+                    <td align="left">
+                      <div
+                        id="dvName1"
+                        style="
+                          color: #000099;
+                          font-weight: bold;
+                          font-size: 18px;
+                          height: 30px;
+                          padding-top: 10px;
+                        "
+                      ></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">Tipo de Documento :</td>
+                    <td align="left">
+                      <div
+                        id="dvType1"
+                        style="
+                          color: #000099;
+                          font-weight: bold;
+                          font-size: 18px;
+                          height: 30px;
+                          padding-top: 10px;
+                        "
+                      ></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">Número de Documento :</td>
+                    <td align="left">
+                      <div
+                        id="dvCi1"
+                        style="
+                          color: #000099;
+                          font-weight: bold;
+                          font-size: 18px;
+                          height: 30px;
+                          padding-top: 10px;
+                        "
+                      ></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">Posee Antecedentes :</td>
+                    <td align="left">
+                      <div
+                        id="dvAntecedent1"
+                        style="
+                          color: #000099;
+                          font-weight: bold;
+                          font-size: 18px;
+                          height: 30px;
+                          padding-top: 10px;
+                        "
+                      ></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th colspan="2">
+                      <button
+                        id="btnAtr2"
+                        style="height: 25px; width: 90px"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        role="button"
+                        aria-disabled="false"
+                      >
+                        <span class="ui-button-text"
+                          >&nbsp;&nbsp;&nbsp;&nbsp;Atras&nbsp;&nbsp;&nbsp;&nbsp;</span
+                        ></button
+                      >&nbsp;&nbsp;<button
+                        id="btnOpen"
+                        style="height: 25px; width: 150px"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        role="button"
+                        aria-disabled="false"
+                      >
+                        <span class="ui-button-text"
+                          >Visualizar Certificado</span
+                        >
+                      </button>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="cleaner"></div>
+    <div class="margin_bottom_20"></div>
+
+    <div
+      class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="ui-dialog-title-dvSimpleDialog"
+      style="display: none; z-index: 1000; outline: 0px; position: absolute"
+    >
+      <div
+        class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"
+        unselectable="on"
+      >
+        <span
+          class="ui-dialog-title"
+          id="ui-dialog-title-dvSimpleDialog"
+          unselectable="on"
+          >Mensaje del Sistema</span
+        ><a
+          href="#"
+          class="ui-dialog-titlebar-close ui-corner-all"
+          role="button"
+          unselectable="on"
+          ><span class="ui-icon ui-icon-closethick" unselectable="on"
+            >close</span
+          ></a
+        >
+      </div>
+      <div
+        id="dvSimpleDialog"
+        class="ui-dialog-content ui-widget-content"
+      ></div>
+      <div class="ui-resizable-handle ui-resizable-n" unselectable="on"></div>
+      <div class="ui-resizable-handle ui-resizable-e" unselectable="on"></div>
+      <div class="ui-resizable-handle ui-resizable-s" unselectable="on"></div>
+      <div class="ui-resizable-handle ui-resizable-w" unselectable="on"></div>
+      <div
+        class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se"
+        unselectable="on"
+        style="z-index: 1001"
+      ></div>
+      <div
+        class="ui-resizable-handle ui-resizable-sw"
+        unselectable="on"
+        style="z-index: 1002"
+      ></div>
+      <div
+        class="ui-resizable-handle ui-resizable-ne"
+        unselectable="on"
+        style="z-index: 1003"
+      ></div>
+      <div
+        class="ui-resizable-handle ui-resizable-nw"
+        unselectable="on"
+        style="z-index: 1004"
+      ></div>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button
+          type="button"
+          class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+          role="button"
+          aria-disabled="false"
+        >
+          <span class="ui-button-text">Ok</span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="ui-dialog ui-widget ui-widget-content ui-corner-all alert ui-draggable ui-resizable"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="ui-dialog-title-dvDialogText"
+      style="
+        display: none;
+        z-index: 1002;
+        outline: 0px;
+        position: absolute;
+        height: auto;
+        width: 400px;
+        top: 46px;
+        left: 51px;
+      "
+    >
+ 
+      <div
+        class="ui-resizable-handle ui-resizable-sw"
+        unselectable="on"
+        style="z-index: 1002"
+      ></div>
+      <div
+        class="ui-resizable-handle ui-resizable-ne"
+        unselectable="on"
+        style="z-index: 1003"
+      ></div>
+      <div
+        class="ui-resizable-handle ui-resizable-nw"
+        unselectable="on"
+        style="z-index: 1004"
+      ></div>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button
+          type="button"
+          class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+          role="button"
+          aria-disabled="false"
+        >
+          <span class="ui-button-text">Cancelar</span></button
+        ><button
+          type="button"
+          class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+          role="button"
+          aria-disabled="false"
+        >
+          <span class="ui-button-text">Aceptar</span>
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

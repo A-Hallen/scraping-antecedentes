@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-18T18:23:13.311582",
+  "cookies": [
+    {
+      "name": "incap_ses_886_2860759",
+      "value": "nHIWMP+8P2/60K+2wrRLDLB6zGgAAAAAYq7tnaQqTw4LUuJcxZ4zRQ==",
+      "domain": ".ministeriodelinterior.gob.ec",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "visid_incap_2860759",
+      "value": "O3emCdzGSWittfa+tNWvibB6zGgAAAAAQUIPAAAAAADEMrP6xDpskrqmgJgU4VXK",
+      "domain": ".ministeriodelinterior.gob.ec",
+      "path": "/",
+      "expires": 1789713271,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "__cf_bm",
+      "value": "XJW6bVNI8VpXthhlZ3zTkg1bY5hK5aUYZLXh52cVx8s-1758234171-1.0.1.1-hYNT.JcG2fGA1DpcWgRIT9Su_C5QeypXtqWAN2X4_9fGkx1ISArygXQK3k0FqA8qg.TVH8RXygw7Ds7JmK5MEe6HG1NP5bKcOOILLKXBDqM",
+      "domain": ".hcaptcha.com",
+      "path": "/",
+      "expires": 1758235971,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ]
+}
